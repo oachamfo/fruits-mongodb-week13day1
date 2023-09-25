@@ -8,7 +8,10 @@ class Edit extends React.Component {
       <DefaultLayout title="Edit Page">
         {/* See the Layout takes in a prop called Title and we pass Edit Page to it  note: comments can't go first or last in  jsx return*/}
         {/* form is not complete we will do that below*/}
-        <form>
+        <form
+          action={`/fruits/${this.props.fruit._id}?_method=PUT`}
+          method="POST"
+        >
           Name:{" "}
           <input type="text" name="name" defaultValue={this.props.fruit.name} />
           <br />

@@ -27,6 +27,32 @@ const Fruit = require("./models/fruits.js");
 //routes
 
 //fruits routes
+
+//seeds route
+app.get("/fruits/seed", (req, res) => {
+  Fruit.create(
+    [
+      {
+        name: "grapefruit",
+        color: "pink",
+        readyToEat: true,
+      },
+      {
+        name: "grape",
+        color: "purple",
+        readyToEat: false,
+      },
+      {
+        name: "avocado",
+        color: "green",
+        readyToEat: true,
+      },
+    ],
+    (err, data) => {
+      res.redirect("/fruits");
+    }
+  );
+});
 //index
 app.get("/fruits/", async (req, res) => {
   // res.send(fruits);
@@ -53,6 +79,23 @@ try {
 } catch {
   console.log("something went wrong...");
 }
+
+//update
+app.put("/fruits/:id", (req, res) => {
+  if (req.body.readyToEat === "on") {
+    req.body.readyToEat = true;
+  } else {
+    req.body.readyToEat = false;
+  }
+  Fruit.findByIdAndUpdate(req.params.id, req.body)
+    .then((updatedFruit) => {
+      console.log(updatedFruit);
+      res.redirect(`/fruits/${req.params.id}`);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+});
 
 //create
 app.post("/fruits", async (req, res) => {
@@ -89,6 +132,7 @@ app.get("/fruits/:id/edit", async (req, res) => {
       res.send({ msg: err.message });
     });
 });
+
 //show
 app.get("/fruits/:id", async (req, res) => {
   try {
