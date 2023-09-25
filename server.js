@@ -77,6 +77,18 @@ app.post("/fruits", async (req, res) => {
   }
 });
 
+//edit
+app.get("/fruits/:id/edit", async (req, res) => {
+  await Fruit.findById(req.params.id)
+    .then((foundFruit) => {
+      res.render("./fruits/Edit", {
+        fruit: foundFruit, //pass in the found fruit so we can prefill the form
+      });
+    })
+    .catch((err) => {
+      res.send({ msg: err.message });
+    });
+});
 //show
 app.get("/fruits/:id", async (req, res) => {
   try {
