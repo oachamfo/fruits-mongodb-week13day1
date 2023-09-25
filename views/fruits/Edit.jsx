@@ -6,6 +6,11 @@ class Edit extends React.Component {
   render() {
     return (
       <DefaultLayout title="Edit Page">
+        <nav>
+          <h1>
+            <a href="/fruits/">Fruits Homepage</a>
+          </h1>
+        </nav>
         {/* See the Layout takes in a prop called Title and we pass Edit Page to it  note: comments can't go first or last in  jsx return*/}
         {/* form is not complete we will do that below*/}
         <form

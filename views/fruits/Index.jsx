@@ -43,8 +43,8 @@ class Index extends React.Component {
           {this.props.fruits.map((fruit, i) => {
             return (
               <li key={i}>
-                <a href={`/fruits/${fruit.id}`}>{fruit.name}</a>
-                is{" "}
+                <a href={`/fruits/${fruit.id}`}>{fruit.name} </a>
+                is {fruit.color}
                 {fruit.readyToEat ? (
                   <span>It is ready to eat</span>
                 ) : (
