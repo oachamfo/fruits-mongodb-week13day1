@@ -30,29 +30,29 @@ const Fruit = require("./models/fruits.js");
 
 //seeds route
 app.get("/fruits/seed", (req, res) => {
-  Fruit.create(
-    [
-      {
-        name: "grapefruit",
-        color: "pink",
-        readyToEat: true,
-      },
-      {
-        name: "grape",
-        color: "purple",
-        readyToEat: false,
-      },
-      {
-        name: "avocado",
-        color: "green",
-        readyToEat: true,
-      },
-    ],
-    (err, data) => {
-      res.redirect("/fruits");
-    }
-  );
+  Fruit.create([
+    {
+      name: "grapefruit",
+      color: "pink",
+      readyToEat: true,
+    },
+    {
+      name: "grape",
+      color: "purple",
+      readyToEat: false,
+    },
+    {
+      name: "avocado",
+      color: "green",
+      readyToEat: true,
+    },
+  ])
+    .then(res.redirect("/fruits"))
+    .catch((err) => {
+      console.log(err);
+    });
 });
+
 //index
 app.get("/fruits/", async (req, res) => {
   // res.send(fruits);
