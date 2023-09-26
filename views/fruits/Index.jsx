@@ -16,7 +16,7 @@ class Index extends React.Component {
                 <a href={`/fruits/${fruit.id}`}>{fruit.name} </a>
                 is {fruit.color}
                 {fruit.readyToEat ? (
-                  <span>It is ready to eat</span>
+                  <span> It is ready to eat</span>
                 ) : (
                   <span> It is not ready to eat </span>
                 )}

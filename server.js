@@ -39,8 +39,8 @@ const Vegetable = require("./models/vegetables.js");
 //fruits routes
 
 //seeds route
-app.get("/fruits/seed", async (req, res) => {
-  await Fruit.create([
+app.get("/fruits/seed", (req, res) => {
+  Fruit.create([
     {
       name: "grapefruit",
       color: "pink",
@@ -59,7 +59,7 @@ app.get("/fruits/seed", async (req, res) => {
   ])
     .then(async () => {
       //this is so the user does not have to refresh the page to see the seeded data
-      //if the user seeds data subsequent times
+      //if the user runs seeds route successive times
       const fruits = await Fruit.find();
       res.render("fruits/Index", { fruits: fruits });
     })
