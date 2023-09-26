@@ -100,7 +100,7 @@ app.put("/fruits/:id", (req, res) => {
   Fruit.findByIdAndUpdate(req.params.id, req.body)
     .then((updatedFruit) => {
       console.log(updatedFruit);
-      res.redirect(`/fruits/${req.params.id}`);
+      res.redirect(`/fruits/${req.params.id}`); //redirect to the Show page
     })
     .catch((err) => {
       console.log(err.message);
