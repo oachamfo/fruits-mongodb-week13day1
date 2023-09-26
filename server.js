@@ -108,9 +108,6 @@ app.post("/fruits", async (req, res) => {
       req.body.readyToEat = false; //do some data correction
     }
 
-    //syntax if array was being used instead of db where fruits points to array
-    // fruits.push(req.body);
-
     //store new fruit in cloud db and console.log new fruit
     console.log(await Fruit.create(req.body));
 
