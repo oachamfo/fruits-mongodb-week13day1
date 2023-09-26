@@ -38,7 +38,7 @@ const Vegetable = require("./models/vegetables.js");
 
 //fruits routes
 
-//seeds route
+//fruits seed route
 app.get("/fruits/seed", (req, res) => {
   Fruit.create([
     {
@@ -57,18 +57,14 @@ app.get("/fruits/seed", (req, res) => {
       readyToEat: true,
     },
   ])
-    .then(async () => {
-      //this is so the user does not have to refresh the page to see the seeded data
-      //if the user runs seeds route successive times
-      const fruits = await Fruit.find();
-      res.render("fruits/Index", { fruits: fruits });
+    .then(() => {
+      res.redirect("/fruits");
     })
     .catch((err) => {
       console.log(err);
     });
 });
 
-//INDEX
 //fruits index
 app.get("/fruits/", async (req, res) => {
   try {
@@ -79,12 +75,12 @@ app.get("/fruits/", async (req, res) => {
   }
 });
 
-//new
+//fruits new
 app.get("/fruits/new", (req, res) => {
   res.render("fruits/New");
 });
 
-//delete
+//fruits delete
 try {
   app.delete("/fruits/:id", async (req, res) => {
     await Fruit.findByIdAndRemove(req.params.id);
@@ -94,7 +90,7 @@ try {
   console.log("something went wrong...");
 }
 
-//update
+//fruits update
 app.put("/fruits/:id", (req, res) => {
   if (req.body.readyToEat === "on") {
     req.body.readyToEat = true;
@@ -111,7 +107,7 @@ app.put("/fruits/:id", (req, res) => {
     });
 });
 
-//create
+//fruits create
 app.post("/fruits", async (req, res) => {
   try {
     if (req.body.readyToEat === "on") {
@@ -131,7 +127,7 @@ app.post("/fruits", async (req, res) => {
   }
 });
 
-//edit
+//fruits edit
 app.get("/fruits/:id/edit", async (req, res) => {
   await Fruit.findById(req.params.id)
     .then((foundFruit) => {
@@ -144,7 +140,7 @@ app.get("/fruits/:id/edit", async (req, res) => {
     });
 });
 
-//show
+//fruits show
 app.get("/fruits/:id", async (req, res) => {
   try {
     const fruit = await Fruit.findById(req.params.id);
@@ -156,7 +152,7 @@ app.get("/fruits/:id", async (req, res) => {
 });
 
 //vegetables routes
-//seeds route
+//vegetables seed route
 app.get("/vegetables/seed", async (req, res) => {
   await Vegetable.create([
     {
@@ -181,7 +177,6 @@ app.get("/vegetables/seed", async (req, res) => {
     });
 });
 
-//index
 //vegetables index
 app.get("/vegetables/", async (req, res) => {
   try {
@@ -192,12 +187,12 @@ app.get("/vegetables/", async (req, res) => {
   }
 });
 
-//new
+//vegetables new
 app.get("/vegetables/new", (req, res) => {
   res.render("vegetables/New");
 });
 
-//delete
+//vegetables delete
 try {
   app.delete("/vegetables/:id", async (req, res) => {
     await Vegetable.findByIdAndRemove(req.params.id);
@@ -207,7 +202,7 @@ try {
   console.log("something went wrong...");
 }
 
-//update
+//vegetables update
 app.put("/vegetables/:id", (req, res) => {
   if (req.body.readyToEat === "on") {
     req.body.readyToEat = true;
@@ -224,7 +219,7 @@ app.put("/vegetables/:id", (req, res) => {
     });
 });
 
-//create
+//vegetables create
 app.post("/vegetables", async (req, res) => {
   try {
     if (req.body.readyToEat === "on") {
@@ -244,7 +239,7 @@ app.post("/vegetables", async (req, res) => {
   }
 });
 
-//edit
+//vegetables edit
 app.get("/vegetables/:id/edit", async (req, res) => {
   await Vegetable.findById(req.params.id)
     .then((foundVegetable) => {
@@ -257,7 +252,7 @@ app.get("/vegetables/:id/edit", async (req, res) => {
     });
 });
 
-//show
+//vegetables show
 app.get("/vegetables/:id", async (req, res) => {
   try {
     const vegetable = await Vegetable.findById(req.params.id);
