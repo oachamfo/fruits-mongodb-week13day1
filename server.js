@@ -6,7 +6,7 @@ const jsxEngine = require("jsx-view-engine"); //require view engine
 const mongoose = require("mongoose"); //require mongoose db
 require("dotenv").config(); //require .env file
 
-//include the method-override package place this where you instructor places it
+//method-override package: for spoofing HTTP methods
 const methodOverride = require("method-override");
 
 //adding view templating engine
@@ -35,7 +35,9 @@ const Fruit = require("./models/fruits.js");
 const Vegetable = require("./models/vegetables.js");
 
 //routes
-
+app.get("/", (req, res) => {
+  res.send("Welcome to Fruits and Vegetables App");
+});
 //fruits routes
 
 //fruits seed route
