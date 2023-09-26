@@ -21,16 +21,26 @@ app.use(express.urlencoded({ extended: true }));
 //use methodOverride.  We'll be adding a query parameter to our delete form named _method
 app.use(methodOverride("_method"));
 
+//db connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+mongoose.connection.once("open", () => {
+  console.log("connected to mongo");
+});
+
 //models
 const Fruit = require("./models/fruits.js");
+const Vegetable = require("./models/vegetables.js");
 
 //routes
 
 //fruits routes
 
 //seeds route
-app.get("/fruits/seed", (req, res) => {
-  Fruit.create([
+app.get("/fruits/seed", async (req, res) => {
+  await Fruit.create([
     {
       name: "grapefruit",
       color: "pink",
@@ -47,16 +57,20 @@ app.get("/fruits/seed", (req, res) => {
       readyToEat: true,
     },
   ])
-    .then(res.redirect("/fruits"))
+    .then(async () => {
+      //this is so the user does not have to refresh the page to see the seeded data
+      //if the user seeds data subsequent times
+      const fruits = await Fruit.find();
+      res.render("fruits/Index", { fruits: fruits });
+    })
     .catch((err) => {
       console.log(err);
     });
 });
 
-//index
+//INDEX
+//fruits index
 app.get("/fruits/", async (req, res) => {
-  // res.send(fruits);
-  // res.render("fruits/Index", { fruits: fruits });
   try {
     const fruits = await Fruit.find();
     res.render("fruits/Index", { fruits: fruits });
@@ -108,8 +122,8 @@ app.post("/fruits", async (req, res) => {
       req.body.readyToEat = false; //do some data correction
     }
 
-    //store new fruit in cloud db and console.log new fruit
-    console.log(await Fruit.create(req.body));
+    //store new fruit in cloud db
+    await Fruit.create(req.body);
 
     res.redirect("/fruits");
   } catch (error) {
@@ -141,16 +155,120 @@ app.get("/fruits/:id", async (req, res) => {
   }
 });
 
+//vegetables routes
+//seeds route
+app.get("/vegetables/seed", async (req, res) => {
+  await Vegetable.create([
+    {
+      name: "vegetable1",
+      color: "vegetableColor1",
+      readyToEat: true,
+    },
+    {
+      name: "vegetable2",
+      color: "vegetableColor2",
+      readyToEat: false,
+    },
+    {
+      name: "vegetable3",
+      color: "vegetableColor3",
+      readyToEat: true,
+    },
+  ])
+    .then(res.redirect("/vegetables/"))
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//index
+//vegetables index
+app.get("/vegetables/", async (req, res) => {
+  try {
+    const vegetables = await Vegetable.find();
+    res.render("vegetables/Index", { vegetables: vegetables });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+//new
+app.get("/vegetables/new", (req, res) => {
+  res.render("vegetables/New");
+});
+
+//delete
+try {
+  app.delete("/vegetables/:id", async (req, res) => {
+    await Vegetable.findByIdAndRemove(req.params.id);
+    res.redirect("/vegetables"); //redirect back to vegetables index
+  });
+} catch {
+  console.log("something went wrong...");
+}
+
+//update
+app.put("/vegetables/:id", (req, res) => {
+  if (req.body.readyToEat === "on") {
+    req.body.readyToEat = true;
+  } else {
+    req.body.readyToEat = false;
+  }
+  Vegetable.findByIdAndUpdate(req.params.id, req.body)
+    .then((updatedVegetable) => {
+      console.log(updatedVegetable);
+      res.redirect(`/vegetables/${req.params.id}`);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+});
+
+//create
+app.post("/vegetables", async (req, res) => {
+  try {
+    if (req.body.readyToEat === "on") {
+      //if checked, req.body.readyToEat is set to 'on'
+      req.body.readyToEat = true; //do some data correction
+    } else {
+      //if not checked, req.body.readyToEat is undefined
+      req.body.readyToEat = false; //do some data correction
+    }
+
+    //store new vegetable
+    await Vegetable.create(req.body);
+
+    res.redirect("/vegetables");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//edit
+app.get("/vegetables/:id/edit", async (req, res) => {
+  await Vegetable.findById(req.params.id)
+    .then((foundVegetable) => {
+      res.render("./vegetables/Edit", {
+        vegetable: foundVegetable, //pass in the found vegetable so we can prefill the form
+      });
+    })
+    .catch((err) => {
+      res.send({ msg: err.message });
+    });
+});
+
+//show
+app.get("/vegetables/:id", async (req, res) => {
+  try {
+    const vegetable = await Vegetable.findById(req.params.id);
+
+    res.render("vegetables/Show", { vegetable: vegetable });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 //listen on port 3000
 app.listen(3000, () => {
   console.log("listening");
-});
-
-//db connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-mongoose.connection.once("open", () => {
-  console.log("connected to mongo");
 });
