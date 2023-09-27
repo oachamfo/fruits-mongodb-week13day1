@@ -4,6 +4,11 @@ class New extends React.Component {
   render() {
     return (
       <div>
+        <nav>
+          <h1>
+            <a href="/vegetables/">Vegetables Homepage</a>
+          </h1>
+        </nav>
         <h1>New vegetable page</h1>
         <form action="/vegetables" method="POST">
           Name: <input type="text" name="name" />
