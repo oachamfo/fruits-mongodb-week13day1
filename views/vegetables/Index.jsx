@@ -20,7 +20,7 @@ class Index extends React.Component {
                 ) : (
                   <span> It is not ready to eat </span>
                 )}
-                {/* Your Delete Form Goes Here  It's incomplete we will fix below*/}
+                {/*delete form down below*/}
                 <form
                   action={`/vegetables/${vegetable._id}?_method=DELETE`}
                   method="POST"

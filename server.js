@@ -17,8 +17,7 @@ app.engine("jsx", jsxEngine());
 //body parser
 app.use(express.urlencoded({ extended: true }));
 
-//after app has been defined
-//use methodOverride.  We'll be adding a query parameter to our delete form named _method
+//use methodOverride package for adding a query parameter to the delete form named _method
 app.use(methodOverride("_method"));
 
 //db connection
@@ -113,10 +112,10 @@ app.put("/fruits/:id", (req, res) => {
 app.post("/fruits", async (req, res) => {
   try {
     if (req.body.readyToEat === "on") {
-      //if checked, req.body.readyToEat is set to 'on'
+      //if ready to eat is checked by user
       req.body.readyToEat = true; //do some data correction
     } else {
-      //if not checked, req.body.readyToEat is undefined
+      //if ready to eat is not checked by user
       req.body.readyToEat = false; //do some data correction
     }
 
@@ -134,7 +133,7 @@ app.get("/fruits/:id/edit", async (req, res) => {
   await Fruit.findById(req.params.id)
     .then((foundFruit) => {
       res.render("./fruits/Edit", {
-        fruit: foundFruit, //pass in the found fruit so we can prefill the form
+        fruit: foundFruit, //pass in the foundFruit so we can use it to populate the form
       });
     })
     .catch((err) => {
@@ -225,10 +224,10 @@ app.put("/vegetables/:id", (req, res) => {
 app.post("/vegetables", async (req, res) => {
   try {
     if (req.body.readyToEat === "on") {
-      //if checked, req.body.readyToEat is set to 'on'
+      //if ready to eat is checked by user
       req.body.readyToEat = true; //do some data correction
     } else {
-      //if not checked, req.body.readyToEat is undefined
+      //if ready to eat is not checked by user
       req.body.readyToEat = false; //do some data correction
     }
 
@@ -246,7 +245,7 @@ app.get("/vegetables/:id/edit", async (req, res) => {
   await Vegetable.findById(req.params.id)
     .then((foundVegetable) => {
       res.render("./vegetables/Edit", {
-        vegetable: foundVegetable, //pass in the found vegetable so we can prefill the form
+        vegetable: foundVegetable, //pass in the foundVegetable so we can use it to populate the form
       });
     })
     .catch((err) => {

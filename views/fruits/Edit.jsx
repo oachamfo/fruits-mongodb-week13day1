@@ -1,5 +1,5 @@
 const React = require("react");
-// As you can see we are using the app layout
+
 const DefaultLayout = require("./layouts/Default.jsx");
 
 class Edit extends React.Component {
@@ -11,8 +11,8 @@ class Edit extends React.Component {
             <a href="/fruits/">Fruits Homepage</a>
           </h1>
         </nav>
-        {/* See the Layout takes in a prop called Title and we pass Edit Page to it  note: comments can't go first or last in  jsx return*/}
-        {/* form is not complete we will do that below*/}
+        {/* DefaultLayout takes in a prop called title. Up above, "Edit Page" is passed to the title prop.*/}
+        {/* down below is the form*/}
         <form
           action={`/fruits/${this.props.fruit._id}?_method=PUT`}
           method="POST"
